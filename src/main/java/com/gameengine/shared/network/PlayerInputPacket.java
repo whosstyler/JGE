@@ -10,6 +10,7 @@ public class PlayerInputPacket extends Packet {
     private float yaw;
     private float pitch;
     private int inputSequence;
+    private long clientTimestamp; // When client generated this input (for lag compensation)
 
     // Button bit flags
     public static final byte BUTTON_FORWARD = 1 << 0;  // W
@@ -21,11 +22,12 @@ public class PlayerInputPacket extends Packet {
 
     public PlayerInputPacket() {}
 
-    public PlayerInputPacket(byte buttonStates, float yaw, float pitch, int inputSequence) {
+    public PlayerInputPacket(byte buttonStates, float yaw, float pitch, int inputSequence, long clientTimestamp) {
         this.buttonStates = buttonStates;
         this.yaw = yaw;
         this.pitch = pitch;
         this.inputSequence = inputSequence;
+        this.clientTimestamp = clientTimestamp;
     }
 
     @Override
@@ -39,6 +41,7 @@ public class PlayerInputPacket extends Packet {
         buffer.putFloat(yaw);
         buffer.putFloat(pitch);
         buffer.putInt(inputSequence);
+        buffer.putLong(clientTimestamp);
     }
 
     @Override
@@ -47,6 +50,7 @@ public class PlayerInputPacket extends Packet {
         yaw = buffer.getFloat();
         pitch = buffer.getFloat();
         inputSequence = buffer.getInt();
+        clientTimestamp = buffer.getLong();
     }
 
     public byte getButtonStates() { return buttonStates; }
@@ -54,4 +58,5 @@ public class PlayerInputPacket extends Packet {
     public float getYaw() { return yaw; }
     public float getPitch() { return pitch; }
     public int getInputSequence() { return inputSequence; }
+    public long getClientTimestamp() { return clientTimestamp; }
 }

@@ -221,7 +221,8 @@ public class NetworkClient implements Runnable {
     }
 
     public void sendInput(byte buttonStates, float yaw, float pitch, int inputSequence) {
-        PlayerInputPacket packet = new PlayerInputPacket(buttonStates, yaw, pitch, inputSequence);
+        long clientTimestamp = System.currentTimeMillis();
+        PlayerInputPacket packet = new PlayerInputPacket(buttonStates, yaw, pitch, inputSequence, clientTimestamp);
         sendPacket(packet);
     }
 
